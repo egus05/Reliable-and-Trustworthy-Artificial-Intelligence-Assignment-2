@@ -1,3 +1,5 @@
 data/
 __pycache__/
 *.tar.gz
+models/*.h5
+*.Identifier
