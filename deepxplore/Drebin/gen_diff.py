@@ -1,6 +1,7 @@
 '''
 usage: python gen_diff.py -h
 '''
+from CIFAR10_model import ResNet50Model #추가
 
 from __future__ import print_function
 
@@ -30,12 +31,22 @@ num_features = len(feats)
 input_tensor = Input(shape=(num_features,))
 
 # load multiple models sharing same input tensor
+"""
 K.set_learning_phase(0)
 model1 = Model1(input_tensor=input_tensor, load_weights=True)
 model2 = Model2(input_tensor=input_tensor, load_weights=True)
 model3 = Model3(input_tensor=input_tensor, load_weights=True)
 # init coverage table
-model_layer_dict1, model_layer_dict2, model_layer_dict3 = init_coverage_tables(model1, model2, model3)
+"""
+# gen_diff.py 내부 수정
+if model_name == 'cifar10':
+    # 과제용 모델 두 개를 로드
+    model1 = ResNet50Model('./models/resnet50_cifar10.h5')
+    model2 = ResNet50Model('./models/resnet50model1.h5')
+    model_layer_dict1 = init_coverage_tables(model1.model) # 뉴런 커버리지 초기화
+    model_layer_dict2 = init_coverage_tables(model2.model)
+    model_list = [model1, model2]
+model_layer_dict1, model_layer_dict2, model_layer_dict3 = init_coverage_tables(model1, model2) #원래 model3까지
 
 # ==============================================================================================
 app_paths = []
